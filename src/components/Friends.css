@@ -1,0 +1,81 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+.friends-container {
+    display: flex;
+    height: 100vh;
+}
+
+h1{
+text-align: center;
+margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center; /* Centrera sökrutan horisontellt */
+    margin-bottom: 20px; /* Avstånd under sökrutan */
+}
+
+.search-input {
+    width: 300px; /* Justera bredden på sökrutan */
+    padding: 10px; /* Inre avstånd */
+    border: 1px solid #ccc; /* Kantlinje */
+    border-radius: 5px; /* Rundade hörn */
+    font-size: 16px; /* Textstorlek */
+}
+
+.friends-main {
+    flex: 1;
+    margin-left: 250px; /* Anpassa detta beroende på sidonavigeringsbredd */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.friends-list {
+    list-style-type: none; /* Ingen punktlista */
+    padding: 0; /* Ingen padding */
+    display: flex; /* Använd flexbox för att ordna listan */
+    flex-wrap: wrap; /* Gör att korten kan brytas till nästa rad */
+    gap: 20px; ;
+}
+
+.friends-list li {
+    background-color: #f4f4f4; /* Bakgrundsfärg för varje vän */
+    padding: 10px;
+    border-radius: 8px; /* Rundade hörn för varje vän */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Lätt skugga för bättre synlighet */
+    width: 200px; /* Bredd på varje vän, justera efter behov */
+    text-align: center; /* Centra texten inuti varje vän */
+}
+
+.friend-item {
+    cursor: pointer; /* Visa pekare vid hover */
+    text-align: center; /* Centrera texten */
+}
+
+.friend-item:hover {
+    background-color: gray;
+}
+
+.friend-avatar {
+    width: 60px; /* Bredd på avataren */
+    height: 60px; /* Höjd på avataren */
+    border-radius: 50%; /* Runda avatarer */
+    background-color: #ccc; /* Grå bakgrund om ingen bild finns */
+    background-size: cover; /* Täcka hela avatarområdet */
+    background-position: center; /* Centrera bilden i avataren */
+    margin: 0 auto; /* Centrera avataren horisontellt */
+}
+
+.friend-username {
+    display: block; /* Gör så att namnet visas under avataren */
+    margin-top: 10px; /* Avstånd mellan avataren och namnet */
+    font-size: 14px; /* Textstorlek för namnet */
+}

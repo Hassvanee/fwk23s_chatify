@@ -1,0 +1,63 @@
+
+.container {
+    position: relative;
+}
+
+.sidenav {
+    width: 0; 
+    height: 100%;
+    background-color: #111;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    transition: width 0.3s ease; /* Mjuk övergång vid öppning/stängning */
+    padding-top: 60px; /* Skapar utrymme för hamburgarikonen */
+}
+
+.sidenav.open {
+    width: 250px; /* När menyn är öppen */
+}
+
+/* Hamburgerikon - alltid längst upp till vänster */
+.hamburger-icon {
+    font-size: 30px;
+    cursor: pointer;
+    color: #818181;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000; /* Se till att ikonen ligger över alla andra element */
+}
+
+/* Navigeringsknappar */
+.sidenav-nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidenav-nav ul li {
+    padding: 15px;
+}
+
+.sidenav-nav ul li button {
+    background-color: transparent;
+    border: none;
+    color: #818181;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+}
+
+.sidenav-nav ul li button:hover {
+    background-color: #575757;
+    color: #f1f1f1;
+}
+
+/* Innehållsstyling när menyn är öppen */
+.container .content {
+    margin-left: 250px; /* Flytta innehållet åt höger när menyn är öppen */
+    transition: margin-left 0.3s ease;
+}
