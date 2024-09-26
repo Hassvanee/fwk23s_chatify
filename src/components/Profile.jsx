@@ -1,25 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import Sidenav from './Sidenav'; 
-import './profile.css'; 
-
-const UserProfile = () => {
-    const userName = localStorage.getItem('userName');
-    const avatar = localStorage.getItem('avatar');
-
-    return (
-        <div className="user-profile">
-            {avatar && <img src={avatar} alt={`${userName}'s avatar`} />}
-            <p>{userName}</p>
-        </div>
-    );
-};
+import Sidenav from './Sidenav';
+import './profile.css';
 
 const BASE_URL = 'https://chatify-api.up.railway.app';
 
 const Profile = () => {
-    const [user, setUser] = useState(null); 
+    const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showModal, setShowModal] = useState(false); // För att styra visning av modal
     const token = localStorage.getItem('token'); // Hämta token från localStorage
 
     useEffect(() => {
@@ -35,41 +24,89 @@ const Profile = () => {
             });
             setLoading(false);
         } else {
-            fetchProfile(); // Hämta från API om inga data finns
-        }
-    }, [token]);
+            const fetchProfile = async () => {
+                if (!token) {
+                    setLoading(false);
+                    return; // Ingen token, inget API-anrop
+                }
 
-    // Hämta profil från API
-    const fetchProfile = async () => {
+                try {
+                    const response = await fetch(`${BASE_URL}/users/me`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch profile');
+                    }
+
+                    const data = await response.json();
+                    console.log('Avatar URL:'); // Logga avatar URL:n
+                    setUser(data);
+
+                    // Spara användardata i localStorage om det behövs
+                    localStorage.setItem('userName', data.username);
+                    localStorage.setItem('email', data.email);
+                    localStorage.setItem('avatar', data.avatar);
+                } catch (error) {
+                    console.error('Error fetching profile:', error);
+                    setError('An error occurred while fetching profile.');
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchProfile(); // Anropa funktionen
+        }
+    }, [token]); // token är det enda beroendet
+
+    const deleteAccount = async () => {
         if (!token) {
-            setLoading(false);
-            return; // Ingen token, inget API-anrop
+            console.error('No token found, cannot delete account.');
+            return;
         }
 
         try {
             const response = await fetch(`${BASE_URL}/users/me`, {
+                method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                },
             });
 
             if (!response.ok) {
-                throw new Error('Failed to fetch profile');
+                throw new Error('Failed to delete account');
             }
 
-            const data = await response.json();
-            setUser(data);
-            // Spara användardata i localStorage om det behövs
-            localStorage.setItem('userName', data.username);
-            localStorage.setItem('email', data.email);
-            localStorage.setItem('avatar', data.avatar);
+            // Rensa localStorage och eventuellt omdirigera användaren
+            localStorage.removeItem('token');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('email');
+            localStorage.removeItem('avatar');
+
+            alert('Your account has been deleted successfully.'); // Informera användaren
+            // Om du vill omdirigera användaren kan du använda:
+            // window.location.href = '/login'; // Eller en annan lämplig rutt
         } catch (error) {
-            console.error('Error fetching profile:', error);
-            setError('An error occurred while fetching profile.');
-        } finally {
-            setLoading(false);
+            console.error('Error deleting account:', error);
+            setError('An error occurred while deleting your account.');
         }
+    };
+
+    const handleDeleteClick = () => {
+        setShowModal(true); // Visa modal när användaren klickar på delete
+    };
+
+    const handleConfirmDelete = () => {
+        deleteAccount(); // Anropa deleteAccount när användaren bekräftar
+        setShowModal(false); // Stäng modal
+    };
+
+    const handleCancelDelete = () => {
+        setShowModal(false); // Stäng modal om användaren avbryter
     };
 
     if (loading) {
@@ -85,15 +122,35 @@ const Profile = () => {
     }
 
     return (
-        <div className="profile-container">
+        <div className="profile-box">
             <Sidenav isChatPage={true} />
-            <div className="profile-box">
-                <h1 className="profile-heading">Profile</h1>
-                {user.avatar && <img src={user.avatar} alt="Profile" className="profile-avatar" />}
-                <p className="profile-info"><strong>Username:</strong> {user.username}</p> {/* Använd rätt namn */}
-                <p className="profile-info"><strong>Email:</strong> {user.email}</p> {/* Använd rätt namn */}
+            <h1 className="profile-heading">Profile</h1>
+            {/* Visa användarnamn och avatar på toppen av sidan */}
+            <div className="user-info">
+                {user.avatar && (
+                    <img
+                        src={'https://i.pravatar.cc/200'}
+                        alt={`${user.username}'s avatar`}
+                        className="user-avatar-top"
+                    />
+                )}
+                <p className="user-name-top">{user.username}</p>
+                <p className="profile-info"><strong>Username:</strong> {user.username}</p>
+                <p className="profile-info"><strong>Email:</strong> {user.email}</p>
                 <button className="profile-button" onClick={() => console.log('Settings clicked')}>Settings</button>
+                <button className="profile-button delete-button" onClick={handleDeleteClick}>Delete Account</button> {/* Radera konto-knapp */}
             </div>
+
+            {/* Modal för bekräftelse av radering */}
+            {showModal && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <h2>Do you want to delete your account?</h2>
+                        <button className="modal-button confirm" onClick={handleConfirmDelete}>Yes</button>
+                        <button className="modal-button cancel" onClick={handleCancelDelete}>No</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -1,47 +1,145 @@
-.profile-container {
-    display: flex;
-    height: 100vh;
-    width: 100%;
-    align-items: center;
-}
+/* Profile.css */
 
+/* Profilboxen */
 .profile-box {
-    flex-grow: 1;
-    overflow-y: auto;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 100px;
-    margin-bottom: 300px;
-    margin-top: 200px;
-    border-radius: 8px;
-    
+    display: flex; /* Flexbox för att styra layouten */
+    flex-direction: column; /* Staplar elementen vertikalt */
+    align-items: center; /* Centrera innehållet horisontellt */
+    max-width: 600px; /* Maximal bredd för boxen */
+    margin: 20px auto; /* Centrera boxen med marginal */
+    background-color: white; /* Vit bakgrund för boxen */
+    padding: 20px; /* Padding inuti boxen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Lätt skugga för djup */
+    border-radius: 10px; /* Rundade hörn */
 }
 
-.profile-avatar {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px;
-}
-
+/* Rubrik för profilen */
 .profile-heading {
-    margin-bottom: 20px;
+    font-size: 24px; /* Större fontstorlek för rubriken */
+    font-weight: bold; /* Fet stil */
+    text-align: center; /* Centrera texten */
+    margin-bottom: 20px; /* Marginal under rubriken */
+    color: #333; /* Mörk färg för text */
 }
 
+/* Användarinformation */
+.user-info {
+    display: flex; /* Flexbox för att styra layouten */
+    flex-direction: column; /* Staplar informationen vertikalt */
+    align-items: center; /* Centrera horisontellt */
+    width: 100%; /* Fyller hela bredden */
+}
+
+/* Användarens avatar */
+.user-avatar-top {
+    border-radius: 50%; /* Rundar av bilden */
+    width: 80px; /* Bredd på avataren */
+    height: 80px; /* Höjd på avataren */
+    margin-bottom: 10px; /* Marginal under avataren */
+}
+
+/* Användarnamn */
+.user-name-top {
+    font-size: 20px; /* Fontstorlek för användarnamn */
+    font-weight: 600; /* Fet stil */
+    margin-bottom: 10px; /* Marginal under användarnamnet */
+}
+
+/* Profilinformation */
 .profile-info {
-    margin-bottom: 10px;
+    font-size: 16px; /* Fontstorlek för profilinformation */
+    color: #555; /* Grå färg för text */
+    margin-bottom: 10px; /* Marginal under varje rad med information */
+    text-align: center; /* Centrera texten */
 }
 
+/* Inställningsknapp */
 .profile-button {
+    display: block; /* Gör knappen block-element för att fylla bredden */
+    width: 100%; /* Full bredd */
+    padding: 10px; /* Padding inuti knappen */
+    background-color: #007bff; /* Bakgrundsfärg */
+    color: white; /* Vit textfärg */
+    font-size: 16px; /* Fontstorlek */
+    text-align: center; /* Centrera texten */
+    border: none; /* Ingen kantlinje */
+    border-radius: 5px; /* Rundade hörn */
+    cursor: pointer; /* Pekaren ändras till hand när man hovrar */
+    transition: background-color 0.3s ease; /* Lätt övergång vid hovring */
+}
+
+/* Hovringseffekt på knappen */
+.profile-button:hover {
+    background-color: #0056b3; /* Mörkare blå vid hovring */
+}
+
+/* Responsiv design för mindre skärmar */
+@media screen and (max-width: 768px) {
+    .profile-box {
+        width: 90%; /* Bredd på boxen för små skärmar */
+        padding: 15px; /* Minska padding */
+    }
+
+    .user-avatar-top {
+        width: 60px; /* Mindre avatar på små skärmar */
+        height: 60px;
+    }
+
+    .user-name-top {
+        font-size: 18px; /* Minska fontstorlek för namn */
+    }
+
+    .profile-info {
+        font-size: 14px; /* Minska fontstorlek för information */
+    }
+
+    .profile-button {
+        padding: 8px; /* Minska padding för knappen */
+    }
+}
+.delete-button {
+    background-color: #dc3545; /* Röd bakgrund */
+}
+
+.delete-button:hover {
+    background-color: #c82333; /* Mörkare röd vid hovring */
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Halvtransparent bakgrund */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Se till att modalen visas över allt annat */
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.modal-button {
+    margin: 10px;
     padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.profile-button:hover {
-    background-color: #0056b3;
+.modal-button.confirm {
+    background-color: #dc3545; /* Röd bakgrund för bekräftelse */
+    color: white;
 }
+
+.modal-button.cancel {
+    background-color: #007bff; /* Blå bakgrund för avbryt */
+    color: white;
+}
+

@@ -59,13 +59,12 @@ const Chat = () => {
     };
 
     // Send message to API
-    const sendMessage = async (message, token, csrfToken, conversationId) => {
-        return fetch(`${API_BASE_URL}/messages/${conversationId}`, {
+    const sendMessage = async (message) => {
+        return fetch(`${API_BASE_URL}/messages/`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': csrfToken
+               
             },
             body: JSON.stringify({ content: message })
         });
