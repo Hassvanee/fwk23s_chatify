@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidenav from './Sidenav';
-import './profile.css';
+import './Profile.css';
 
 const BASE_URL = 'https://chatify-api.up.railway.app';
 
