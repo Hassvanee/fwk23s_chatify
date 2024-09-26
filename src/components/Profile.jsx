@@ -125,20 +125,18 @@ const Profile = () => {
         <div className="profile-box">
             <Sidenav isChatPage={true} />
             <h1 className="profile-heading">Profile</h1>
-            {/* Visa användarnamn och avatar på toppen av sidan */}
+
             <div className="user-info">
                 {user.avatar && (
                     <img
                         src={'https://i.pravatar.cc/200'}
                         alt={`${user.username}'s avatar`}
-                        className="user-avatar-top"
-                    />
+                        className="user-avatar-top"/>
                 )}
-                <p className="user-name-top">{user.username}</p>
                 <p className="profile-info"><strong>Username:</strong> {user.username}</p>
                 <p className="profile-info"><strong>Email:</strong> {user.email}</p>
                 <button className="profile-button" onClick={() => console.log('Settings clicked')}>Settings</button>
-                <button className="profile-button delete-button" onClick={handleDeleteClick}>Delete Account</button> {/* Radera konto-knapp */}
+                <button className="profile-button delete-button" onClick={handleDeleteClick}>Delete Account</button>
             </div>
 
             {/* Modal för bekräftelse av radering */}

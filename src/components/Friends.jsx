@@ -8,14 +8,18 @@ const BASE_URL = 'https://chatify-api.up.railway.app';
 // Hämta användarprofil
 const fetchUsers = async (token) => {
     try {
+        console.log("Fetching users with token:", token);  // Logga token för felsökning
         const response = await fetch(`${BASE_URL}/users`, {
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` },
         });
+        console.log("API response:", response);  // Logga hela responsen
         if (!response.ok) {
-            throw new Error('Failed to fetch users');
+            throw new Error(`Failed to fetch users: ${response.status} ${response.statusText}`);
         }
-        return await response.json();
+        const data = await response.json();
+        console.log("Fetched users:", data);  // Logga datan för felsökning
+        return data;
     } catch (error) {
         console.error('Error fetching users:', error);
         throw error;
@@ -31,11 +35,17 @@ const Friends = () => {
 
     useEffect(() => {
         const getUsers = async () => {
+            if (!token) {
+                console.error('No token found');
+                setError('No token found. Please log in.');
+                return;
+            }
+
             try {
                 const users = await fetchUsers(token);
                 setUsers(users || []);
             } catch (error) {
-                setError('Failed to load users. Please try again.'); // Sätt felmeddelande
+                setError('Failed to load users. Please try again.');
                 console.error('Error fetching users:', error);
             }
         };
@@ -75,15 +85,17 @@ const Friends = () => {
                 ) : (
                     <ul className="friends-list">
                         {filteredUsers.length > 0 ? (
-                            filteredUsers.map((user) => (
+                            filteredUsers.map((user, index) => (
                                 <li 
-                                    key={user.id} 
+                                    key={user.id || index}  // Unik nyckel: använd `user.id` eller `index` som fallback
                                     className="friend-item" 
                                     onClick={() => handleUserClick(user.id)}
                                 >
                                     <div 
                                         className="friend-avatar" 
-                                        style={{ backgroundImage: `url(${user.avatarUrl})` }} 
+                                        style={{ 
+                                            backgroundImage: `url(${user.avatarUrl || `https://i.pravatar.cc/150?u=${user.id}`})` 
+                                        }} 
                                     />
                                     <span className="friend-username">{user.username}</span>
                                 </li>
