@@ -43,13 +43,13 @@ const Profile = () => {
                     }
 
                     const data = await response.json();
-                    console.log('Avatar URL:'); // Logga avatar URL:n
+
                     setUser(data);
 
                     // Spara användardata i localStorage om det behövs
-                    localStorage.setItem('userName', data.username);
-                    localStorage.setItem('email', data.email);
-                    localStorage.setItem('avatar', data.avatar);
+                    localStorage.getItem('userName', data.username);
+                    localStorage.getItem('email', data.email);
+                    localStorage.getItem('avatar', data.avatar);
                 } catch (error) {
                     console.error('Error fetching profile:', error);
                     setError('An error occurred while fetching profile.');

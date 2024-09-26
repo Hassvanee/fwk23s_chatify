@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';  
 import { useNavigate } from 'react-router-dom';
 import Sidenav from './Sidenav';
 import './Chat.css';
@@ -16,9 +16,9 @@ const Chat = () => {
     const token = localStorage.getItem('token') || '';
 
     // Fetch all messages for a conversation
-    const fetchMessages = async (token, conversationId) => {
+    const fetchMessages = async (token) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/messages/${conversationId}`, {
+            const response = await fetch(`${API_BASE_URL}/messages?conversationId=${conversationId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -30,7 +30,9 @@ const Chat = () => {
                 throw new Error(`Failed to fetch messages: ${response.status} - ${text}`);
             }
             const messages = await response.json();
+            console.log('Fetched messages:', messages); // Logga de hämtade meddelandena
             setMessages(messages);
+            localStorage.setItem('messages', JSON.stringify(messages)); // Spara meddelanden i localStorage
         } catch (error) {
             console.error('Error fetching messages:', error);
         }
@@ -60,14 +62,25 @@ const Chat = () => {
 
     // Send message to API
     const sendMessage = async (message) => {
-        return fetch(`${API_BASE_URL}/messages/`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-               
-            },
-            body: JSON.stringify({ content: message })
-        });
+        try {
+            const response = await fetch(`${API_BASE_URL}/messages/`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content: message, conversationId }) // Inkludera conversationId
+            });
+            if (!response.ok) {
+                const text = await response.text();
+                console.error('Error sending message:', text);
+                throw new Error(`Failed to send message: ${response.status} - ${text}`);
+            }
+            const sentMessage = await response.json();
+            setMessages(prevMessages => [...prevMessages, sentMessage]);
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
     };
 
     // Fetch user details
@@ -76,39 +89,30 @@ const Chat = () => {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
             }
         });
         return response.json();
     };
 
     // Delete a message
-    const deleteMessage = async (messageId, token, csrfToken) => {
-        return fetch(`${API_BASE_URL}/messages/${messageId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': csrfToken
-            }
-        });
-    };
-
-    // Check token expiration and redirect if needed
-    useEffect(() => {
-        const checkTokenExpiration = () => {
-            if (token) {
-                const isTokenExpired = false; // Sätt upp en riktig kontroll för utgång
-                if (isTokenExpired) {
-                    localStorage.clear();
-                    navigate('/login');
+    const deleteMessage = async (messageId) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/messages/${messageId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
                 }
-            } else {
-                navigate('/login');
+            });
+            if (!response.ok) {
+                const text = await response.text();
+                console.error('Error deleting message:', text);
+                throw new Error(`Failed to delete message: ${response.status} - ${text}`);
             }
-        };
-        checkTokenExpiration();
-    }, [navigate, token]);
+        } catch (error) {
+            console.error('Error deleting message:', error);
+        }
+    };
 
     // Fetch user details and conversations
     useEffect(() => {
@@ -129,7 +133,6 @@ const Chat = () => {
         }
     }, [token]);
 
-
     useEffect(() => {
         const fetchToken = async () => {
             try {
@@ -140,12 +143,11 @@ const Chat = () => {
             }
         };
         fetchToken();
-    }, []);
+    }, [token]);
 
-    
     useEffect(() => {
         if (conversationId && token) {
-            fetchMessages(token, conversationId);  // Anropa getMessages här
+            fetchMessages(token);  // Anropa fetchMessages här
         }
     }, [conversationId, token]);
 
@@ -156,7 +158,6 @@ const Chat = () => {
         return tempDiv.innerHTML;
     };
 
-
     const handleSendMessage = async (e) => {
         e.preventDefault();
         if (newMessage.trim() === '') return;
@@ -164,12 +165,10 @@ const Chat = () => {
         const sanitizedMessage = sanitizeMessage(newMessage);
         const newMessageObject = { sender: loggedInUserName, content: sanitizedMessage };
 
-        setMessages([...messages, newMessageObject]);
+        setMessages(prevMessages => [...prevMessages, newMessageObject]);
 
         try {
-            const response = await sendMessage(sanitizedMessage, token, csrfToken, conversationId);
-            const sentMessage = await response.json();
-            setMessages([...messages, sentMessage]);
+            await sendMessage(sanitizedMessage);
             setNewMessage('');  // Clear input
         } catch (error) {
             console.error('Error sending message:', error);
@@ -179,11 +178,10 @@ const Chat = () => {
     const handleDeleteMessage = async (messageId) => {
         try {
             // Skicka begäran om att radera ett meddelande
-            await deleteMessage(messageId, token, csrfToken);
+            await deleteMessage(messageId);
     
             // Filtrera bort det raderade meddelandet från det lokala meddelandetillståndet
-            const updatedMessages = messages.filter(message => message.id !== messageId);
-            setMessages(updatedMessages); // Uppdatera meddelandelistan utan det raderade meddelandet
+            setMessages(prevMessages => prevMessages.filter(message => message.id !== messageId));
         } catch (error) {
             console.error('Error deleting message:', error);
         }
@@ -200,19 +198,27 @@ const Chat = () => {
 
                 <div className="chat-box">
                     <ul className="message-list">
-                        {messages.map((msg, index) => (
-                            <li
-                                key={index}
-                                className={`message-item ${msg.sender === loggedInUserName ? 'my-message' : 'other-message'}`}
-                            >
-                                <div className={`message-bubble ${msg.sender === loggedInUserName ? 'align-right' : 'align-left'}`}>
-                                    <strong>{msg.sender === loggedInUserName ? 'Me' : msg.sender}: </strong>{msg.content}
-                                </div>
-                                {msg.sender === loggedInUserName && (
-                                    <button onClick={() => handleDeleteMessage(msg.id)}>Delete</button>
-                                )}
-                            </li>
-                        ))}
+                        {messages.map((msg, index) => {
+                            // Säkerställ att msg är definierad och har egenskapen sender
+                            if (!msg || !msg.sender) {
+                                console.error('Invalid message data:', msg);
+                                return null; // Hoppa över ogiltiga meddelanden
+                            }
+
+                            return (
+                                <li
+                                    key={index}
+                                    className={`message-item ${msg.sender === loggedInUserName ? 'my-message' : 'other-message'}`}
+                                >
+                                    <div className={`message-bubble ${msg.sender === loggedInUserName ? 'align-right' : 'align-left'}`}>
+                                        <strong>{msg.sender === loggedInUserName ? 'Me' : msg.sender}: </strong>{msg.content}
+                                    </div>
+                                    {msg.sender === loggedInUserName && (
+                                        <button onClick={() => handleDeleteMessage(msg.id)}>Delete</button>
+                                    )}
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
                 <form onSubmit={handleSendMessage} className="message-form">
