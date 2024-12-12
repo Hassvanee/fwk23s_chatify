@@ -6,6 +6,7 @@ const Login = ({ setToken }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [showSuccess, setShowSuccess] = useState(false);
     const navigate = useNavigate();
     const BASE_URL = 'https://chatify-api.up.railway.app';
 
@@ -62,9 +63,12 @@ const Login = ({ setToken }) => {
                 localStorage.setItem('userName', response.username);
                 localStorage.setItem('email', response.email);
                 localStorage.setItem('avatar', response.avatar);
-                
+
                 setToken(response.token);
-                navigate('/chat');
+                setShowSuccess(true);
+                setTimeout(() => {
+                    navigate('/chat');
+                }, 2000);
             } else {
                 throw new Error('Invalid credentials');
             }
@@ -79,6 +83,14 @@ const Login = ({ setToken }) => {
 
     return (
         <div className="login-container">
+            {showSuccess && (
+                <div className="overlay">
+                    <div className="success-modal">
+                        <p>Successfully logged in! Redirecting to chat...</p>
+                    </div>
+                </div>
+            )}
+
             <form onSubmit={handleLogin} className="login-form">
                 <h2>Login</h2>
                 <input
