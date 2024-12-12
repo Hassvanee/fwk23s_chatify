@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Sidenav.css'; 
+import './Sidenav.css';
 
 const Sidenav = () => {
     const [isOpen, setIsOpen] = useState(false); // Menyn är stängd som standard
@@ -8,10 +8,10 @@ const Sidenav = () => {
 
     const token = localStorage.getItem('token');
 
-    if (!token) return null; 
+    if (!token) return null;
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
+        localStorage.clear(); // Rensar all lagrad data i localStorage
         navigate('/login');
     };
 

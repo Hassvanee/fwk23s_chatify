@@ -6,7 +6,7 @@
 .sidenav {
     width: 0; 
     height: 100%;
-    background-color: #000;
+    background-color: #5A505B;
     position: fixed;
     top: 0;
     left: 0;
@@ -23,7 +23,7 @@
 .hamburger-icon {
     font-size: 30px;
     cursor: pointer;
-    color: #818181;
+    color: #DB8E4B;
     position: fixed;
     top: 10px;
     left: 10px;
@@ -43,7 +43,7 @@
 .sidenav-nav ul li button {
     background-color: transparent;
     border: none;
-    color: #818181;
+    color: #DB8E4B;
     font-size: 18px;
     cursor: pointer;
     width: 100%;
@@ -52,7 +52,7 @@
 }
 
 .sidenav-nav ul li button:hover {
-    background-color: #575757;
+    background-color: #9A98A8;
     color: #f1f1f1;
 }
 
