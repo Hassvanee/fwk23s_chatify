@@ -58,11 +58,12 @@ const Login = ({ setToken }) => {
             const csrfToken = await getCSRFToken();
             const response = await loginUser(username, password, csrfToken);
             if (response && response.token) {
+                const decodedToken = JSON.parse(atob(response.token.split('.')[1]));
                 localStorage.setItem('token', response.token);
-                localStorage.setItem('userId', response.userId);
-                localStorage.setItem('userName', response.username);
-                localStorage.setItem('email', response.email);
-                localStorage.setItem('avatar', response.avatar);
+                localStorage.setItem('userId', decodedToken.id);
+                localStorage.setItem('userName', decodedToken.user);
+                localStorage.setItem('email', decodedToken.email);
+                localStorage.setItem('avatar', decodedToken.avatar);
 
                 setToken(response.token);
                 setShowSuccess(true);
@@ -82,38 +83,53 @@ const Login = ({ setToken }) => {
     };
 
     return (
-        <div className="login-container">
-            {showSuccess && (
-                <div className="overlay">
-                    <div className="success-modal">
-                        <p>Successfully logged in! Redirecting to chat...</p>
+        
+            <div className="login-container">
+                {showSuccess && (
+                    <div className="overlay">
+                        <div className="success-modal">
+                            <p>Successfully logged in! Redirecting to chat...</p>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            <form onSubmit={handleLogin} className="login-form">
-                <h2>Login</h2>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <button type="submit">Login</button>
-                {error && <p className="error">{error}</p>}
-                <button type="button" onClick={handleRegisterRedirect} className="register-button">
-                    Register here
-                </button>
-            </form>
-        </div>
+                
+
+                <div className="form-wrapper">
+                    <form onSubmit={handleLogin} className="login-form">
+                    <div className="image-wrapper">
+                    <img src="src/assets/icon-start.svg" alt="Chat illustration" className="chat-image" />
+                </div>
+                        <h2>Login</h2>
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                placeholder="Username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <button type="submit">Login</button>
+                        {error && <p className="error">{error}</p>}
+                        <button type="button" onClick={handleRegisterRedirect} className="register-button">
+                            Register here
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+
+
+
+
     );
 };
 

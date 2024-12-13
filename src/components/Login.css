@@ -5,28 +5,33 @@ html, body {
     justify-content: center;
 }
 
+
 .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    
+    height: 100vh;   
+}
+
+h2 {
+text-align: center;
 }
 
 .login-form {
     background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     width: 100%;
     max-width: 400px;
+    display: flex;
+    flex-direction: column;
     
 }
 
-.login-form h2 {
+.login-form {
     margin: 0 0 20px;
     font-size: 24px;
-    color: #DB8E4B;
+    color: #F39C12;
 }
 
 .login-form input {
@@ -41,8 +46,8 @@ html, body {
 .login-form button {
     width: 100%;
     padding: 10px;
-    background-color:#5A505B;
-    color: #DB8E4B;
+    background-color: #444444;
+    color: #F39C12;
     border: none;
     border-radius: 4px;
     font-size: 16px;
@@ -50,7 +55,7 @@ html, body {
 }
 
 .login-form button:hover {
-    background-color: #9A98A8;
+    background-color: #A3A3A3;
 }
 
 .login-form p {
@@ -64,7 +69,7 @@ html, body {
     width: 100%;
     padding: 10px;
     margin-top: 10px;
-    background-color: #6c757d;
+    background-color: rgba(211, 211, 211, 0.73);
     color: #ffffff;
     border: none;
     border-radius: 4px;
@@ -117,4 +122,36 @@ html, body {
         opacity: 1;
         transform: scale(1);
     }
+}
+.chat-image {
+    width: 100%;
+    max-width: 300px; /* Gör bilden responsiv */
+    margin: 20px auto;
+    display: block;
+}
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Gör sidan centrerad vertikalt */
+    padding: 20px;
+}
+
+.form-wrapper {
+    display: flex;
+    align-items: center;
+    max-width: 800px;
+    margin: auto;
+}
+
+.chat-image {
+    width: 200px; /* Justera bildens bredd */
+    height: auto; /* Behåll proportionerna */
+}
+
+
+
+.login-form input, 
+.login-form button {
+    margin-bottom: 10px; /* Lägg utrymme mellan input och knappar */
 }

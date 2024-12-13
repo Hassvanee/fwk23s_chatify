@@ -94,3 +94,18 @@
 .message-form button:hover {
     background-color: #45a049;
 }
+
+/* Delete button styling */
+.delete-button {
+    background-color: transparent;
+    border: none;
+    color: #e53935;
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 10px; /* Se till att knappen inte hamnar på samma plats som texten */
+    align-self: flex-end; /* Placera knappen längst till höger på egna meddelanden */
+}
+
+.delete-button:hover {
+    color: #c62828;
+}

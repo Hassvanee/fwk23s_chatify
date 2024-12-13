@@ -16,7 +16,7 @@ const Chat = () => {
       userId: 0,
       text: 'Hej!',
       createdAt: '2024-08-15T11:19:56.240Z',
-      avatar: 'https://i.pravatar.cc/100?img=17',
+      avatar: 'https://i.pravatar.cc/100?img=14',
       username: 'Hasse',
     },
     {
