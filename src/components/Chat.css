@@ -51,7 +51,7 @@
 }
 
 .my-message {
-    background-color: #daf8cb; /* Light green for own messages */
+    background-color:  rgba(211, 211, 211, 0.73);
     border-radius: 10px;
     padding: 10px;
     margin-left: auto;
@@ -59,7 +59,7 @@
 }
 
 .other-message {
-    background-color: #f0f0f0; /* Light grey for others' messages */
+    background-color: #f39d12a8; 
     border-radius: 10px;
     padding: 10px;
     margin-right: auto;
@@ -71,6 +71,7 @@
     padding: 10px;
     border-radius: 10px;
     line-height: 1.4;
+    color:#444444;
 }
 
 .message-form {
