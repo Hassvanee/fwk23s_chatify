@@ -119,15 +119,16 @@ const Chat = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        <form onSubmit={handleSendMessage} className="message-form">
+   
+        <div className="message-form" onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(e)}>
           <input
             type="text"
             placeholder="New message..."
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
           />
-          <button type="submit">Send</button>
-        </form>
+          <button onClick={handleSendMessage}>Send</button>
+        </div>
       </main>
     </div>
   );

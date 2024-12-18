@@ -12,6 +12,7 @@ const Sidenav = () => {
 
     const handleLogout = () => {
         localStorage.clear(); // Rensar all lagrad data i localStorage
+        sessionStorage.clear(); 
         navigate('/login');
     };
 
