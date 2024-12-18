@@ -64,10 +64,6 @@ const Login = ({ setToken }) => {
                 localStorage.setItem('userName', decodedToken.user);
                 localStorage.setItem('email', decodedToken.email);
                 localStorage.setItem('avatar', decodedToken.avatar);
-                // Efter login, spara token i localStorage
-                localStorage.setItem('authToken', response.authToken);
-                localStorage.setItem('csrfToken', response.csrfToken);
-
 
                 setToken(response.token);
                 setShowSuccess(true);
@@ -87,48 +83,48 @@ const Login = ({ setToken }) => {
     };
 
     return (
-
-        <div className="login-container">
-            {showSuccess && (
-                <div className="overlay">
-                    <div className="success-modal">
-                        <p>Successfully logged in! Redirecting to chat...</p>
+        
+            <div className="login-container">
+                {showSuccess && (
+                    <div className="overlay">
+                        <div className="success-modal">
+                            <p>Successfully logged in! Redirecting to chat...</p>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
 
+                
 
-
-            <div className="form-wrapper">
-                <form onSubmit={handleLogin} className="login-form">
+                <div className="form-wrapper">
+                    <form onSubmit={handleLogin} className="login-form">
                     <div className="image-wrapper">
-                        <img src="\src\assets\icon-start.svg" alt="Chat illustration" className="chat-image" />
-                    </div>
-                    <h2>Login</h2>
-                    <div className="input-group">
-                        <input
-                            type="text"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit">Login</button>
-                    {error && <p className="error">{error}</p>}
-                    <button type="button" onClick={handleRegisterRedirect} className="register-button">
-                        Register here
-                    </button>
-                </form>
+                    <img src="src/assets/icon-start.svg" alt="Chat illustration" className="chat-image" />
+                </div>
+                        <h2>Login</h2>
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                placeholder="Username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <button type="submit">Login</button>
+                        {error && <p className="error">{error}</p>}
+                        <button type="button" onClick={handleRegisterRedirect} className="register-button">
+                            Register here
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
 
 
 
