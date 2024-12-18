@@ -5,7 +5,7 @@ import Sidenav from './Sidenav';
 
 const Chat = () => {
   // State för att hantera meddelanden, användare och fel
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([]);  // Start empty
   const [newMessage, setNewMessage] = useState('');
   const [error, setError] = useState('');
   const messagesEndRef = useRef(null);
@@ -24,6 +24,33 @@ const Chat = () => {
   const loggedInUserId = Number(localStorage.getItem('userId')) || 1;
   const token = localStorage.getItem('token');
   const activeConversation = localStorage.getItem('activeConversation');
+
+  const [fakeChat] = useState([
+    {
+      id: 1,
+      userId: 0,
+      text: 'Hej!',
+      createdAt: '2024-08-15T11:19:56.240Z',
+      avatar: 'https://i.pravatar.cc/100?img=14',
+      username: 'Hasse',
+    },
+    {
+      id: 2,
+      userId: 0,
+      text: 'Det är Hasse här!',
+      createdAt: '2024-08-15T11:20:56.240Z',
+      avatar: 'https://i.pravatar.cc/100?img=6',
+      username: 'Hasse',
+    },
+    {
+      id: 3,
+      userId: 0,
+      text: 'Ska vi hitta på nåt idag?',
+      createdAt: '2024-08-15T11:21:56.240Z',
+      avatar: 'https://i.pravatar.cc/100?img=6',
+      username: 'Hasse',
+    },
+  ]);
 
   // Scroll till slutet av meddelandelistan
   const scrollToBottom = () => {
@@ -109,7 +136,8 @@ const Chat = () => {
   };
 
   // Kombinerar och sorterar alla meddelanden
-  const allMessages = messages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  const allMessages = [...fakeChat, ...messages]  // Combine fakeChat and fetched messages
+    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
   return (
     <div className="chat-container">
@@ -117,7 +145,7 @@ const Chat = () => {
 
       <main className="chat-main">
         <div className="welcome-message">
-          <h1>Welcome back, {loggedInUserName}!</h1>
+          <h1 className="white-text">Welcome back, {loggedInUserName}!</h1>
         </div>
 
         <div className="chat-box">
