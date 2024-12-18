@@ -4,7 +4,8 @@
 
 Testa applikationen här:
 
-### [Live Demo](https://samaae-chatify.netlify.app/)
+### [Live Demo]
+https://samaae-chatify.netlify.app/
 
 Utforska och använd chattfunktionen direkt på webbplatsen.
 
