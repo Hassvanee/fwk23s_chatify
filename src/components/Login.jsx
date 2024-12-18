@@ -98,7 +98,7 @@ const Login = ({ setToken }) => {
                 <div className="form-wrapper">
                     <form onSubmit={handleLogin} className="login-form">
                     <div className="image-wrapper">
-                    <img src="/src/assets/MeowChat-Logo.png" className="chat-image" />
+                    <img src="/smile icon.svg" className="chat-image" />
                 </div>
                         <h2>Login</h2>
                         <div className="input-group">
