@@ -5,7 +5,7 @@
 Testa applikationen här:
 
 ### [Live Demo]
-https://samaae-chatify.netlify.app/login
+https://samaae-chatify.netlify.app/
 
 Utforska och använd chattfunktionen direkt på webbplatsen.
 
